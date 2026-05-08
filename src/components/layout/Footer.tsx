@@ -137,7 +137,7 @@ const Footer = () => {
 
               <li>
                 <a
-                  href="#home"
+                  href=""
                   className="
                     hover:text-cyan-400
                     transition
@@ -149,7 +149,7 @@ const Footer = () => {
 
               <li>
                 <a
-                  href="#about"
+                  href="/#about"
                   className="
                     hover:text-cyan-400
                     transition
@@ -161,7 +161,7 @@ const Footer = () => {
 
               <li>
                 <a
-                  href="#projects"
+                  href="/#projects"
                   className="
                     hover:text-cyan-400
                     transition
@@ -173,7 +173,7 @@ const Footer = () => {
 
               <li>
                 <a
-                  href="#certifications"
+                  href="/#certifications"
                   className="
                     hover:text-cyan-400
                     transition
@@ -185,7 +185,7 @@ const Footer = () => {
 
               <li>
                 <a
-                  href="#contact"
+                  href="/#contact"
                   className="
                     hover:text-cyan-400
                     transition

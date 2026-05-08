@@ -5,7 +5,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
         <a
-          href="#home"
+          href=""
           className="text-2xl font-bold text-white"
         >
           NabeelSite
@@ -15,7 +15,7 @@ const Navbar = () => {
 
           <li>
             <a
-              href="#about"
+              href="/#about"
               className="hover:text-cyan-400 hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] transition"
             >
               About
@@ -24,7 +24,7 @@ const Navbar = () => {
 
           <li>
             <a
-              href="#skills"
+              href="/#skills"
               className="hover:text-cyan-400 hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] transition"
             >
               Skills
@@ -33,7 +33,7 @@ const Navbar = () => {
 
           <li>
             <a
-              href="#projects"
+              href="/#projects"
               className="hover:text-cyan-400 hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] transition"
             >
               Projects
@@ -42,7 +42,7 @@ const Navbar = () => {
 
           <li>
             <a
-              href="#certifications"
+              href="/#certifications"
               className="hover:text-cyan-400 hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] transition"
             >
               Certifications
@@ -51,7 +51,7 @@ const Navbar = () => {
 
           <li>
             <a
-              href="#contact"
+              href="/#contact"
               className="hover:text-cyan-400 hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] transition"
             >
               Contact

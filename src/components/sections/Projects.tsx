@@ -20,6 +20,7 @@ import {
 } from "react-icons/tb"
 
 import { projects } from "../../data/projects"
+import { Music } from "lucide-react"
 
 const Projects = () => {
 
@@ -37,6 +38,10 @@ const Projects = () => {
     {
       name: "Fullstack",
       icon: <FiCode />,
+    },
+    {
+      name: "Prod Music",
+      icon: <Music />,
     },
   ]
 

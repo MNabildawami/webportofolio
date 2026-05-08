@@ -84,4 +84,30 @@ export const projects = [
       "https://demo.com",
   },
 
+  {
+    id: 4,
+
+    title:
+      "aku salah apa",
+
+    category:
+      "Prod Music",
+
+    description:
+      "edm project music",
+
+    image:
+      "/projects/hidden_img_00016.png",
+
+    tech: [
+      "fl studio",
+    ],
+
+    github:
+      "https://github.com/",
+
+    demo:
+      "https://demo.com",
+  },
+
 ]

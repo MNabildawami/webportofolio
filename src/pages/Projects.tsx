@@ -1,366 +1,520 @@
-import { useState } from "react"
+import { useState, useEffect } from "react" // <-- Tambahkan useEffect disini
+
+import { motion } from "framer-motion"
+
+import {
+  FiHome,
+  FiChevronRight,
+} from "react-icons/fi"
 
 import { projects } from "../data/projects"
 
+import ProjectSidebar from "../components/projects/ProjectSidebar"
+
+import ProjectCard from "../components/projects/ProjectCard"
+
+import Footer from "../components/layout/Footer"
+
 const Projects = () => {
+
+  // --- TAMBAHAN FIX SCROLL ---
+  // Kode ini akan memaksa halaman langsung berada di paling atas saat pertama kali dibuka
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+  // ---------------------------
 
   const categories = [
     "All",
     "AI Engineer",
     "Cybersecurity",
     "Fullstack",
+    "Prod Music"
+  ]
+
+  /* ALL TECHNOLOGIES */
+
+  const technologies = [
+
+    "All",
+
+    ...new Set(
+      projects.flatMap(
+        (project) => project.tech
+      )
+    ),
   ]
 
   const [activeCategory, setActiveCategory] =
     useState("All")
 
-  const [visibleProjects, setVisibleProjects] =
-    useState(3)
+  const [activeTech, setActiveTech] =
+    useState("All")
 
-  const filteredProjects =
-    activeCategory === "All"
+  const [searchQuery, setSearchQuery] =
+    useState("")
 
-      ? projects
+  /* FILTER */
 
-      : projects.filter(
-          (project) =>
-            project.category === activeCategory
-        )
+  const filteredProjects = projects.filter(
+    (project) => {
+
+      const matchesCategory =
+
+        activeCategory === "All"
+
+          ? true
+
+          : project.category === activeCategory
+
+      const matchesTech =
+
+        activeTech === "All"
+
+          ? true
+
+          : project.tech.includes(activeTech)
+
+      const matchesSearch =
+
+        project.title
+          .toLowerCase()
+
+          .includes(
+            searchQuery.toLowerCase()
+          )
+
+      return (
+        matchesCategory &&
+        matchesTech &&
+        matchesSearch
+      )
+    }
+  )
 
   return (
 
-    <section
-      className="
-        min-h-screen
-        bg-black
-        text-white
+    <>
 
-        px-6
-        py-32
-      "
-    >
+      <motion.section
 
-      <div
+        initial={{
+          opacity: 0,
+        }}
+
+        animate={{
+          opacity: 1,
+        }}
+
+        transition={{
+          duration: 0.6,
+        }}
+
         className="
-          max-w-7xl
-          mx-auto
+          relative
+
+          min-h-screen
+
+          bg-black
+          text-white
+
+          px-6
+
+          pt-12
+          pb-24
         "
       >
 
-        {/* HEADER */}
+        {/* TOP GLOW */}
 
         <div
           className="
-            text-center
-            mb-20
+            absolute
+
+            top-0
+            left-1/2
+
+            -translate-x-1/2
+
+            w-[700px]
+            h-[700px]
+
+            bg-cyan-500/10
+
+            blur-[180px]
+
+            rounded-full
           "
-        >
+        />
 
-          <p
-            className="
-              text-cyan-400
-              uppercase
-              tracking-[0.3em]
-              text-sm
-              mb-4
-            "
-          >
-            Projects
-          </p>
-
-          <h1
-            className="
-              text-5xl
-              md:text-7xl
-
-              font-black
-
-              mb-6
-            "
-          >
-            Featured Work
-          </h1>
-
-          <p
-            className="
-              text-gray-400
-
-              max-w-2xl
-              mx-auto
-
-              text-lg
-            "
-          >
-            Selected projects across AI Engineering,
-            Cybersecurity, and Fullstack Development.
-          </p>
-
-        </div>
-
-        {/* FILTERS */}
+        {/* BOTTOM GLOW */}
 
         <div
           className="
-            flex
-            flex-wrap
-            items-center
-            justify-center
+            absolute
 
-            gap-4
+            bottom-0
+            right-0
 
-            mb-20
+            w-[500px]
+            h-[500px]
+
+            bg-blue-500/10
+
+            blur-[180px]
+
+            rounded-full
           "
-        >
+        />
 
-          {
-            categories.map((category) => (
-
-              <button
-                key={category}
-
-                onClick={() => {
-                  setActiveCategory(category)
-                  setVisibleProjects(3)
-                }}
-
-                className={`
-                  px-6
-                  py-3
-
-                  rounded-full
-
-                  transition-all
-                  duration-300
-
-                  ${
-                    activeCategory === category
-
-                      ? `
-                        bg-cyan-400
-                        text-black
-
-                        shadow-[0_0_25px_rgba(34,211,238,0.5)]
-                      `
-
-                      : `
-                        border
-                        border-white/10
-
-                        bg-white/5
-
-                        hover:border-cyan-400/50
-                        hover:text-cyan-400
-                      `
-                  }
-                `}
-              >
-                {category}
-              </button>
-
-            ))
-          }
-
-        </div>
-
-        {/* PROJECT GRID */}
+        {/* GRID */}
 
         <div
           className="
+            absolute
+            inset-0
+
+            opacity-[0.03]
+
+            [background-image:linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)]
+
+            [background-size:80px_80px]
+          "
+        />
+
+        {/* CONTENT */}
+
+        <div
+          className="
+            relative
+            z-10
+
+            max-w-7xl
+            mx-auto
+
             grid
 
-            md:grid-cols-2
-            xl:grid-cols-3
+            grid-cols-1
+            xl:grid-cols-[320px_1fr]
 
-            gap-8
+            gap-10
+            xl:gap-16
           "
         >
 
-          {
-            filteredProjects
-              .slice(0, visibleProjects)
+          {/* SIDEBAR */}
 
-              .map((project) => (
+          <ProjectSidebar
+            categories={categories}
 
-                <div
-                  key={project.id}
+            technologies={technologies}
+
+            activeCategory={activeCategory}
+
+            activeTech={activeTech}
+
+            setActiveCategory={setActiveCategory}
+
+            setActiveTech={setActiveTech}
+
+            totalProjects={projects.length}
+          />
+
+          {/* MAIN */}
+
+          <div>
+
+            {/* BREADCRUMB */}
+
+            <motion.nav
+
+              initial={{
+                opacity: 0,
+                y: -10,
+              }}
+
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+
+              transition={{
+                duration: 0.5,
+                delay: 0.2,
+              }}
+
+              className="
+                flex
+                items-center
+
+                gap-2
+
+                text-sm
+                text-gray-500
+
+                mb-8
+
+                overflow-x-auto
+                whitespace-nowrap
+              "
+            >
+
+              <a
+                href="/"
+
+                className="
+                  flex
+                  items-center
+
+                  gap-1.5
+
+                  hover:text-cyan-400
+
+                  transition-colors
+                "
+              >
+
+                <FiHome
+                  className="
+                    text-base
+
+                    mb-[2px]
+                  "
+                />
+
+                <span>
+                  Home
+                </span>
+
+              </a>
+
+              <FiChevronRight
+                className="
+                  text-gray-600
+                "
+              />
+
+              <span
+                className="
+                  text-cyan-400
+                  font-medium
+                "
+              >
+                Projects
+              </span>
+
+            </motion.nav>
+
+            {/* HEADER */}
+
+            <div
+              className="
+                mb-16
+              "
+            >
+
+              <p
+                className="
+                  text-cyan-400
+                  uppercase
+
+                  tracking-[0.3em]
+
+                  text-sm
+
+                  mb-4
+                "
+              >
+                Projects
+              </p>
+
+              <h1
+                className="
+                  text-5xl
+                  md:text-7xl
+
+                  font-black
+
+                  leading-tight
+
+                  mb-6
+                "
+              >
+                Featured Work
+              </h1>
+
+              <p
+                className="
+                  text-gray-400
+
+                  max-w-3xl
+
+                  text-lg
+                  leading-relaxed
+                "
+              >
+                Selected works across AI Engineering,
+                Cybersecurity, and Fullstack Development.
+              </p>
+
+            </div>
+
+            {/* TOP BAR */}
+
+            <div
+              className="
+                flex
+                flex-col
+
+                md:flex-row
+                md:items-center
+                md:justify-between
+
+                gap-6
+
+                mb-12
+              "
+            >
+
+              {/* SEARCH */}
+
+              <div
+                className="
+                  relative
+
+                  w-full
+                  md:max-w-md
+                "
+              >
+
+                <input
+
+                  type="text"
+
+                  placeholder="Search projects..."
+
+                  value={searchQuery}
+
+                  onChange={(e) =>
+                    setSearchQuery(e.target.value)
+                  }
 
                   className="
-                    group
+                    w-full
 
                     bg-white/[0.03]
 
                     border
                     border-white/10
 
-                    rounded-[32px]
+                    backdrop-blur-xl
 
-                    overflow-hidden
+                    rounded-2xl
 
-                    hover:border-cyan-400/30
+                    px-6
+                    py-4
 
-                    hover:-translate-y-2
+                    outline-none
+
+                    text-white
+
+                    placeholder:text-gray-500
+
+                    focus:border-cyan-400/50
 
                     transition-all
-                    duration-500
+                  "
+                />
+
+              </div>
+
+              {/* RESULT */}
+
+              <div
+                className="
+                  flex
+                  items-center
+
+                  gap-3
+                "
+              >
+
+                <div
+                  className="
+                    w-3
+                    h-3
+
+                    rounded-full
+
+                    bg-cyan-400
+
+                    animate-pulse
+                  "
+                />
+
+                <p
+                  className="
+                    text-gray-400
                   "
                 >
+                  Showing
 
-                  {/* IMAGE */}
-
-                  <div
+                  <span
                     className="
-                      h-64
+                      text-white
+                      font-semibold
 
-                      overflow-hidden
+                      mx-2
                     "
                   >
+                    {filteredProjects.length}
+                  </span>
 
-                    <img
-                      src={project.image}
-                      alt={project.title}
+                  Projects
+                </p>
 
-                      className="
-                        w-full
-                        h-full
+              </div>
 
-                        object-cover
+            </div>
 
-                        group-hover:scale-110
-
-                        transition-transform
-                        duration-700
-                      "
-                    />
-
-                  </div>
-
-                  {/* CONTENT */}
-
-                  <div
-                    className="
-                      p-8
-                    "
-                  >
-
-                    <h2
-                      className="
-                        text-2xl
-                        font-bold
-
-                        mb-4
-                      "
-                    >
-                      {project.title}
-                    </h2>
-
-                    <p
-                      className="
-                        text-gray-400
-
-                        leading-relaxed
-
-                        mb-6
-                      "
-                    >
-                      {project.description}
-                    </p>
-
-                    {/* TECH */}
-
-                    <div
-                      className="
-                        flex
-                        flex-wrap
-
-                        gap-3
-                      "
-                    >
-
-                      {project.tech.map((tech) => (
-
-                        <span
-                          key={tech}
-
-                          className="
-                            px-4
-                            py-2
-
-                            rounded-full
-
-                            bg-cyan-400/10
-
-                            text-cyan-400
-
-                            text-sm
-                          "
-                        >
-                          {tech}
-                        </span>
-
-                      ))}
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              ))
-          }
-
-        </div>
-
-        {/* LOAD MORE */}
-
-        {
-          visibleProjects <
-          filteredProjects.length && (
+            {/* PROJECT LIST */}
 
             <div
               className="
                 flex
-                justify-center
+                flex-col
 
-                mt-20
+                gap-8
               "
             >
 
-              <button
+              {
+                filteredProjects.map(
+                  (project, index) => (
 
-                onClick={() =>
-                  setVisibleProjects(
-                    visibleProjects + 3
+                    <ProjectCard
+                      key={project.id}
+
+                      project={project}
+
+                      index={index}
+                    />
+
                   )
-                }
-
-                className="
-                  px-8
-                  py-4
-
-                  rounded-full
-
-                  bg-cyan-400
-                  text-black
-
-                  font-semibold
-
-                  hover:scale-105
-
-                  transition-all
-
-                  shadow-[0_0_25px_rgba(34,211,238,0.4)]
-                "
-              >
-                Load More Projects
-              </button>
+                )
+              }
 
             </div>
-          )
-        }
 
-      </div>
+          </div>
 
-    </section>
+        </div>
+
+      </motion.section>
+
+      <Footer />
+
+    </>
 
   )
 }

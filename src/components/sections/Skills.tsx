@@ -3,7 +3,7 @@ import {
   Code2,
   ShieldCheck,
   BrainCircuit,
-  Database,
+  Music4,
 } from "lucide-react"
 
 const skills = [
@@ -23,9 +23,9 @@ const skills = [
     description: "Developing intelligent systems using Machine Learning and Deep Learning.",
   },
   {
-    title: "Database Systems",
-    icon: Database,
-    description: "Managing scalable databases and backend data architecture.",
+    title: "Prod Music",
+    icon: Music4,
+    description: "Creating and producing music for various platforms and audiences.",
   },
 ]
 
