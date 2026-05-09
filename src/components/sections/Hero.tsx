@@ -120,7 +120,7 @@ const Hero = () => {
               <FiInstagram className="text-xl" />
             </a>
              <a 
-              href="https://scholar.google.com/" // MASUKKAN LINK SCHOLAR ANDA
+              href="https://scholar.google.com/citations?user=oCv1v7UAAAAJ&hl=id" // MASUKKAN LINK SCHOLAR ANDA
               target="_blank" 
               rel="noreferrer"
               className="p-2.5 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400/30 transition-all duration-300 hover:-translate-y-1"

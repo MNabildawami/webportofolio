@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
-import Projects from "./pages/Projects";
-import Dashboard from "./pages/Dashboard"; // <-- Import halaman Dashboard yang baru kita buat
+import Projects from "./pages/dashboard/Projects";
+import Dashboard from "./pages/dashboard/Overview"; // <-- Import halaman Dashboard yang baru kita buat
 
 const App = () => {
   return (

@@ -3,7 +3,7 @@ import { FiGrid, FiTerminal } from "react-icons/fi";
 
 const DashboardCTA = () => {
   return (
-    <section className="relative bg-[#020202] px-6 py-24 overflow-hidden border-t border-white/5">
+    <section id="dashboard-cta" className="relative bg-[#020202] px-6 py-24 overflow-hidden border-t border-white/5">
       
       {/* AMBIENT GLOW DIBELAKANG CARD */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none" />

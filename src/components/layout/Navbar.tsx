@@ -7,13 +7,12 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
-  // Menambahkan "Blog" ke dalam daftar navigasi
   const navLinks = [
     { name: "About", href: "about" },
     { name: "Skills", href: "skills" },
     { name: "Projects", href: "projects" },
     { name: "Certifications", href: "certifications" },
-     { name: "Blog", href: "blog" },
+    { name: "Blog", href: "blog" },
     { name: "Contact", href: "contact" },
   ];
 
@@ -42,13 +41,22 @@ const Navbar = () => {
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
+    
+    // Pantau menu navigasi biasa
     navLinks.forEach((link) => {
       const section = document.getElementById(link.href);
       if (section) observer.observe(section);
     });
 
+    // PANTAU SECTION CTA DASHBOARD
+    const ctaSection = document.getElementById("dashboard-cta");
+    if (ctaSection) observer.observe(ctaSection);
+
     return () => observer.disconnect();
   }, []);
+
+  // Variabel untuk mengecek apakah kita sedang di section dashboard-cta
+  const isDashboardActive = activeSection === "dashboard-cta";
 
   return (
     <>
@@ -61,7 +69,7 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
           
-          {/* LOGO: PREMIUM 3D FLIP & SHIMMER */}
+          {/* LOGO */}
           <a href="/" className="group flex items-center gap-3.5 outline-none">
             <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-white/[0.02] border border-white/10 group-hover:border-cyan-400/40 transition-colors duration-500 overflow-hidden shadow-lg">
               <motion.div
@@ -95,7 +103,7 @@ const Navbar = () => {
             </div>
           </a>
 
-          {/* DESKTOP MENU: DENGAN SECTION BLOG */}
+          {/* DESKTOP MENU TABS */}
           <ul className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href;
@@ -122,14 +130,18 @@ const Navbar = () => {
             })}
           </ul>
 
-          {/* DASHBOARD ACTION */}
-          <div className="hidden md:block">
+          {/* DASHBOARD BUTTON (BERUBAH MENYALA JIKA ACTIVE) */}
+          <div className="hidden md:block relative">
             <a 
               href="/dashboard" 
-              className="group flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white/[0.02] border border-white/10 hover:bg-cyan-400/10 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.15)] transition-all duration-300 active:scale-95"
+              className={`group flex items-center gap-2 px-5 py-2.5 rounded-lg border transition-all duration-300 active:scale-95 ${
+                isDashboardActive 
+                  ? "bg-cyan-400/10 border-cyan-400 shadow-[0_0_25px_rgba(34,211,238,0.3)] scale-105" // <-- Kondisi saat menyala
+                  : "bg-white/[0.02] border-white/10 hover:bg-cyan-400/10 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.15)]" // <-- Kondisi normal
+              }`}
             >
-              <FiGrid className="text-cyan-400 text-sm group-hover:rotate-90 transition-transform duration-500" />
-              <span className="text-white font-bold text-[10px] uppercase tracking-widest transition-colors">
+              <FiGrid className={`text-sm transition-transform duration-500 ${isDashboardActive ? "text-cyan-400 rotate-90" : "text-cyan-400 group-hover:rotate-90"}`} />
+              <span className={`font-bold text-[10px] uppercase tracking-widest transition-colors ${isDashboardActive ? "text-white" : "text-white"}`}>
                 Dashboard
               </span>
             </a>
@@ -189,7 +201,9 @@ const Navbar = () => {
                 <a 
                   href="/dashboard"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 text-cyan-400 text-2xl font-bold tracking-widest uppercase"
+                  className={`flex items-center gap-3 text-2xl font-bold tracking-widest uppercase transition-colors ${
+                    isDashboardActive ? "text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]" : "text-gray-500 hover:text-white"
+                  }`}
                 >
                   <FiGrid />
                   Dashboard
