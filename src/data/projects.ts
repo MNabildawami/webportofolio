@@ -6,21 +6,22 @@ export const projects: Project[] = [
     id: 1,
 
     title:
-      "Clinical Disease Classification",
+      "Predictive Maintenance Analytics System",
 
     category:
-      "AI Engineer",
+      "Industrial Analytics",
 
     description:
-      "AI-based disease classification system using deep learning for medical image analysis.",
+      "Industrial predictive maintenance platform using operational analytics and machine learning to monitor equipment performance and reduce downtime risks.",
 
     image:
-      "/projects/hidden_img_00016.png",
+      "/projects/logo.png",
 
     tech: [
       "Python",
-      "TensorFlow",
-      "React",
+      "Pandas",
+      "Power BI",
+      "SQL",
     ],
 
     github:
@@ -34,21 +35,22 @@ export const projects: Project[] = [
     id: 2,
 
     title:
-      "Post-Quantum Cryptography",
+      "Fuel Distribution & Demand Forecasting",
 
     category:
-      "Cybersecurity",
+      "Industrial Analytics",
 
     description:
-      "Implementation of ML-DSA digital signature for secure digital evidence systems.",
+      "Enterprise fuel demand forecasting and distribution monitoring system designed to optimize operational efficiency and logistics planning.",
 
     image:
-      "/projects/image2.jpeg",
+      "/projects/logo.png",
 
     tech: [
-      "Cryptography",
       "Python",
-      "Security",
+      "Forecasting",
+      "Power BI",
+      "PostgreSQL",
     ],
 
     github:
@@ -62,21 +64,22 @@ export const projects: Project[] = [
     id: 3,
 
     title:
-      "ERP System Development",
+      "Industrial IoT Energy Monitoring Dashboard",
 
     category:
-      "Fullstack",
+      "Industrial Analytics",
 
     description:
-      "Custom ERP and business management system development using Odoo framework.",
+      "Real-time operational dashboard for industrial energy monitoring, analytics visualization, and infrastructure performance tracking.",
 
     image:
-      "/projects/image3.webp",
+      "/projects/logo.png",
 
     tech: [
-      "Odoo",
-      "PostgreSQL",
+      "React",
       "Python",
+      "Power BI",
+      "PostgreSQL",
     ],
 
     github:
@@ -90,19 +93,22 @@ export const projects: Project[] = [
     id: 4,
 
     title:
-      "aku salah apa",
+      "Executive Operational Intelligence Dashboard",
 
     category:
-      "Prod Music",
+      "Industrial Analytics",
 
     description:
-      "edm project music",
+      "Enterprise operational intelligence dashboard for executive-level analytics, KPI monitoring, and infrastructure performance insights.",
 
     image:
-      "/projects/hidden_img_00016.png",
+      "/projects/logo.png",
 
     tech: [
-      "fl studio",
+      "Power BI",
+      "SQL",
+      "React",
+      "Analytics",
     ],
 
     github:
@@ -112,4 +118,120 @@ export const projects: Project[] = [
       "https://demo.com",
   },
 
-]
+  {
+    id: 5,
+
+    title:
+      "SIEM Security Monitoring Platform",
+
+    category:
+      "Security Monitoring",
+
+    description:
+      "Security monitoring platform for enterprise infrastructure using SIEM workflows, log analysis, and threat activity visualization.",
+
+    image:
+      "/projects/logo.png",
+
+    tech: [
+      "SIEM",
+      "Linux",
+      "Python",
+      "Security",
+    ],
+
+    github:
+      "https://github.com/",
+
+    demo:
+      "https://demo.com",
+  },
+
+  {
+    id: 6,
+
+    title:
+      "Intrusion Detection & Threat Analysis System",
+
+    category:
+      "Security Monitoring",
+
+    description:
+      "Enterprise intrusion detection and threat analysis system focused on anomaly monitoring and operational security intelligence.",
+
+    image:
+      "/projects/logo.png",
+
+    tech: [
+      "Wireshark",
+      "Python",
+      "Linux",
+      "IDS",
+    ],
+
+    github:
+      "https://github.com/",
+
+    demo:
+      "https://demo.com",
+  },
+
+  {
+    id: 7,
+
+    title:
+      "Vulnerability Assessment & Security Audit Lab",
+
+    category:
+      "Security Monitoring",
+
+    description:
+      "Security assessment laboratory environment for vulnerability analysis, infrastructure auditing, and enterprise security evaluation.",
+
+    image:
+      "/projects/logo.png",
+
+    tech: [
+      "Nmap",
+      "Linux",
+      "Security",
+      "Kali Linux",
+    ],
+
+    github:
+      "https://github.com/",
+
+    demo:
+      "https://demo.com",
+  },
+
+  {
+  id: 8,
+
+  title:
+    "Enterprise Portfolio & Monitoring Workspace",
+
+  category:
+    "Systems Development",
+
+  description:
+    "Modern enterprise portfolio workspace designed to showcase industrial analytics, security monitoring systems, and operational intelligence projects through a professional dashboard experience.",
+
+  image:
+    "/projects/logo.png",
+
+  tech: [
+    "React",
+    "TypeScript",
+    "Tailwind",
+    "Framer Motion",
+  ],
+
+  github:
+    "https://github.com/MNabildawami/webportofolio",
+
+  demo:
+    "https://nabeelsite.vercel.app/",
+},
+
+];

@@ -1,149 +1,277 @@
-import { motion } from "framer-motion";
-import { FiMapPin, FiMail, FiClock, FiBriefcase, FiAward } from "react-icons/fi";
+import { useState, useEffect } from "react";
+import { motion, type Variants } from "framer-motion";
+import { 
+  FiMapPin, 
+  FiBriefcase, 
+  FiAward, 
+  FiArrowRight, 
+  FiExternalLink,
+  FiClock
+} from "react-icons/fi";
 import { Link } from "react-router-dom";
 
-// IMPORT KOMPONEN SIDEBAR YANG SUDAH DIBUAT TADI
+// ================= IMPORT KOMPONEN DASHBOARD =================
 import DashboardSidebar from "../../components/dashboard/dashboardsidebar";
+import DashboardStatCard from "../../components/dashboard/dashboardStatCard";
+import DashboardFeatureCard from "../../components/dashboard/dashboardFeatureCard";
+import Breadcrumb from "../../components/dashboard/Breadcrumb"; 
+
+// ================= IMPORT DATA ASLI (DINAMIS) =================
+import { experiences } from "../../data/experiences";
+import { projects } from "../../data/projects";
+import { certifications } from "../../data/certifications";
+
+// ================= ANIMASI VARIANTS =================
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
+  show: { 
+    opacity: 1, 
+    y: 0, 
+    filter: "blur(0px)",
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } 
+  }
+};
 
 const Overview = () => {
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(() => {
+    return localStorage.getItem("sidebarCollapsed") === "true";
+  });
+
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => { document.body.style.overflow = "unset"; };
+  }, [isMobileOpen]);
+
+  // ================= AMBIL DATA TERBARU =================
+  const recentExperiences = experiences.slice(0, 3);
+  const recentProjects = projects.slice(0, 2);
+  const recentCerts = certifications.slice(0, 3);
+
+  // ================= DATA BREADCRUMB (Hanya butuh ini saja) =================
+  const breadcrumbData = [
+  { label: "Dashboard", href: "/dashboard" }
+];
+
   return (
-    <div className="flex h-screen bg-[#020202] text-white overflow-hidden font-sans">
+    // Background utama gelap pekat
+    <div className="flex h-screen bg-[#020202] text-white overflow-hidden font-sans selection:bg-cyan-500/30">
       
-      {/* ================= PANGGIL SIDEBAR DI SINI ================= */}
-      <DashboardSidebar />
+      {/* SIDEBAR UTAMA */}
+      <DashboardSidebar 
+        isMobileOpen={isMobileOpen}
+        setIsMobileOpen={setIsMobileOpen}
+        isDesktopCollapsed={isDesktopCollapsed}
+        setIsDesktopCollapsed={setIsDesktopCollapsed}
+      />
 
-      {/* ================= AREA KONTEN UTAMA (KANAN) ================= */}
-      <main className="flex-1 relative overflow-y-auto p-6 md:p-10">
+      {/* AREA KONTEN KANAN */}
+      <main className="flex-1 relative overflow-y-auto custom-scrollbar overflow-x-hidden">
         
-        {/* Efek Glow Global untuk area background kanan */}
-        <div className="absolute top-0 right-0 w-[600px] h-[500px] bg-cyan-500/5 blur-[150px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-blue-500/5 blur-[150px] rounded-full pointer-events-none" />
+        {/* ================= AMBIENT GLOW ================= */}
+        <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-cyan-500/10 blur-[150px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-[10%] left-[-10%] w-[500px] h-[500px] bg-purple-600/5 blur-[150px] rounded-full pointer-events-none" />
+        <div className="absolute inset-0 opacity-[0.02] [background-image:linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] [background-size:40px_40px] pointer-events-none" />
 
-        {/* BUNGKUS KONTEN DENGAN ANIMASI MUNCUL */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="relative z-10 max-w-7xl mx-auto pb-20"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+          className="relative z-10 max-w-[1400px] mx-auto px-5 md:px-10 pt-28 lg:pt-12 pb-24"
         >
-          
-          {/* ================= HEADER ================= */}
-          <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-black tracking-tight mb-2 text-white">
-              Welcome Back! 👋
-            </h1>
-            <p className="text-gray-400 text-sm max-w-2xl">
-              Explore my journey, projects, and achievements in AI, Cybersecurity, and Fullstack Development.
-            </p>
-          </div>
+          {/* ================= BREADCRUMB OOP ================= */}
+          <motion.div variants={itemVariants}>
+            <Breadcrumb items={breadcrumbData} />
+          </motion.div>
 
-          {/* ================= STAT CARDS ROW ================= */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <StatCard label="Total Projects" value="12" desc="Completed" color="bg-blue-500" />
-            <StatCard label="Experience" value="2+" desc="Years" color="bg-purple-500" />
-            <StatCard label="Certifications" value="8+" desc="Earned" color="bg-cyan-500" />
-            <StatCard label="Control Hub" value="1" desc="Dashboard" color="bg-green-500" />
-          </div>
+          {/* ================= HEADER COPYWRITING ================= */}
+          <motion.div variants={itemVariants} className="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-8 mb-14">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-400"></span>
+                </span>
+                <p className="text-cyan-400 text-[10px] font-bold tracking-[0.3em] uppercase">Operations Status: Active</p>
+              </div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white">
+                Enterprise Analytics Workspace
+              </h1>
+              <p className="text-gray-400 text-sm md:text-base max-w-2xl font-medium leading-relaxed">
+                Explore industrial analytics projects, enterprise monitoring systems, cybersecurity case studies, and operational intelligence solutions across my professional workspace.
+              </p>
+            </div>
 
-          {/* ================= MIDDLE ROW (ABOUT & TIMELINE) ================= */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            {/* STAT CARDS */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full xl:w-auto">
+              <DashboardStatCard label="Projects" value={projects.length.toString()} desc="Finished" color="bg-blue-500" iconType="folder" />
+              <DashboardStatCard label="Certifications" value={certifications.length.toString()} desc="Earned" color="bg-orange-500" iconType="award" />
+              <DashboardStatCard label="Experience" value={experiences.filter((exp) => exp.type === "Experience").length.toString()} desc="Journey" color="bg-purple-500" iconType="briefcase" />
+            </div>
+          </motion.div>
+
+          {/* ================= BENTO GRID LAYOUT ================= */}
+          <div className="flex flex-col xl:grid xl:grid-cols-3 gap-6">
             
-            {/* ABOUT ME (Kiri - Makan 2 Kolom) */}
-            <div className="lg:col-span-2 p-6 md:p-8 rounded-[24px] bg-[#0a0d14] border border-white/5 hover:border-white/10 transition-colors">
-              <h2 className="text-lg font-bold mb-6 text-white">About Me</h2>
-              <div className="flex flex-col md:flex-row gap-8">
-                
-                {/* Foto Profil / Avatar */}
+            {/* 1. CORE PROFILE */}
+            <motion.div variants={itemVariants} className="xl:col-span-2 rounded-[32px] bg-[#0A0A0A] border border-white/5 p-8 shadow-2xl flex flex-col hover:border-white/10 transition-all duration-500 group">
+              <div className="flex justify-between items-center mb-10 pb-6 border-b border-white/5">
+                <div className="flex items-center gap-3">
+                  <FiMapPin className="text-cyan-400" />
+                  <h2 className="text-sm font-semibold text-white tracking-widest uppercase">Professional Profile</h2>
+                </div>
+                <Link to="/dashboard/about" className="flex items-center gap-2 text-[10px] font-bold text-cyan-400 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full border border-white/5 hover:bg-white/10">
+                  FULL DETAILS <FiExternalLink />
+                </Link>
+              </div>
+
+              <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start flex-1">
                 <div className="shrink-0 relative">
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-cyan-400/20 to-blue-500/20 border-2 border-cyan-400 p-1">
-                    <div className="w-full h-full rounded-full bg-[#06080D] flex items-center justify-center text-3xl font-black text-cyan-400 shadow-inner">
-                      N
+                  <div className="absolute inset-0 bg-cyan-500/20 blur-[30px] rounded-full group-hover:bg-cyan-500/30 transition-all" />
+                  <div className="relative w-32 h-32 rounded-[2rem] bg-gradient-to-br from-cyan-400 to-indigo-600 p-[2px]">
+                    <div className="w-full h-full rounded-[30px] overflow-hidden bg-[#050505] group-hover:scale-[0.98] transition-transform">
+                      <img
+                        src="/projects/nabilpic.jpg"
+                        alt="M. Nabil Dawami"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   </div>
-                  <div className="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-[#0a0d14] shadow-[0_0_10px_rgba(34,197,94,0.6)]" />
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-green-500 border-4 border-[#0A0A0A] shadow-[0_0_15px_rgba(34,197,94,0.5)]" />
                 </div>
 
-                {/* Info Biodata */}
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-white">M. Nabil Dawami</h3>
-                  <p className="text-sm text-cyan-400 mb-4">AI Engineer & Fullstack Developer</p>
-                  <p className="text-sm text-gray-400 leading-relaxed mb-6">
-                    Undergraduate IT student with a strong focus on building intelligent systems, securing digital environments, and developing scalable applications. Passionate about AI Security, digital forensics, and modern web architectures.
+                <div className="flex-1 text-center lg:text-left">
+                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">M. Nabil Dawami</h3>
+                  <p className="text-cyan-400 font-bold tracking-widest uppercase text-[10px] md:text-xs mb-5">
+                    Industrial Data & Security Analyst
+                  </p>
+                  <p className="text-gray-400 text-sm leading-relaxed mb-8 max-w-xl font-medium">
+                    Focused on industrial analytics, enterprise monitoring systems, and cybersecurity solutions to build secure, operationally efficient, and data-driven infrastructures.
                   </p>
                   
-                  {/* Kontak & Lokasi */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <InfoItem icon={<FiMapPin />} title="Location" value="Pekanbaru, Indonesia" />
-                    <InfoItem icon={<FiBriefcase />} title="Freelance" value="Available" />
-                    <InfoItem icon={<FiMail />} title="Email" value="Contact via Form" />
-                    <InfoItem icon={<FiClock />} title="Response Time" value="< 24 hours" />
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <InfoBox title="Location" value="Pekanbaru, ID" />
+                    <InfoBox title="Status" value="Open for collaboration" />
+                    <InfoBox title="Contact" value="@naabildawami" />
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* EXPERIENCE TIMELINE MINI (Kanan - Makan 1 Kolom) */}
-            <div className="p-6 md:p-8 rounded-[24px] bg-[#0a0d14] border border-white/5 hover:border-white/10 transition-colors flex flex-col">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-bold text-white">Experience Timeline</h2>
-                <Link to="/dashboard/experience" className="text-xs text-cyan-400 hover:underline">View All →</Link>
-              </div>
-              
-              <div className="space-y-6 relative before:absolute before:inset-y-0 before:left-[11px] before:w-[2px] before:bg-white/5 flex-1">
-                <MiniTimelineItem 
-                  role="AI Engineer Intern" 
-                  company="Tech Company • 2024 - Present" 
-                  active 
-                />
-                <MiniTimelineItem 
-                  role="Fullstack Developer" 
-                  company="Freelance • 2023 - Present" 
-                />
-                <MiniTimelineItem 
-                  role="Cybersecurity Learner" 
-                  company="Self-Study • 2022 - Present" 
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* ================= BOTTOM ROW (PROJECTS & CERTS) ================= */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            {/* FEATURED PROJECTS */}
-            <div className="lg:col-span-2 p-6 md:p-8 rounded-[24px] bg-[#0a0d14] border border-white/5 hover:border-white/10 transition-colors">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-bold text-white">Featured Projects</h2>
-                <Link to="/dashboard/projects" className="text-xs text-cyan-400 hover:underline">View All Projects →</Link>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <MiniProjectCard 
-                  tag="AI APPLICATION" 
-                  title="Medical AI Diagnosis" 
-                  tech="Python, FastAPI, OpenAI" 
-                />
-                <MiniProjectCard 
-                  tag="CYBERSECURITY" 
-                  title="Post-Quantum ML-DSA" 
-                  tech="Digital Forensics, Crypto" 
-                />
-              </div>
-            </div>
-
-            {/* LATEST CERTIFICATIONS */}
-            <div className="p-6 md:p-8 rounded-[24px] bg-[#0a0d14] border border-white/5 hover:border-white/10 transition-colors">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-bold text-white">Latest Certs</h2>
-                <Link to="/dashboard/certifications" className="text-xs text-cyan-400 hover:underline">View All →</Link>
+            {/* 2. CAREER JOURNEY */}
+            <motion.div variants={itemVariants} className="xl:col-span-1 rounded-[32px] bg-[#0A0A0A] border border-white/5 p-8 shadow-2xl flex flex-col hover:border-white/10 transition-all duration-500">
+              <div className="flex justify-between items-center mb-8 pb-6 border-b border-white/5">
+                <div className="flex items-center gap-3">
+                  <FiClock className="text-purple-400" />
+                  <h2 className="text-sm font-semibold text-white tracking-widest uppercase">Career Journey</h2>
+                </div>
+                <Link to="/dashboard/experience" className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+                  <FiArrowRight />
+                </Link>
               </div>
 
-              <div className="space-y-4">
-                <MiniCertItem title="IDCamp Gen AI Engineer" issuer="Dicoding" year="2025" />
-                <MiniCertItem title="MLOps Engineer" issuer="Dicoding" year="2025" />
-                <MiniCertItem title="Odoo Partner Onboarding" issuer="Odoo" year="2025" />
+              <div className="relative flex-1 mt-2">
+                <div className="absolute left-[9px] top-2 bottom-4 w-[2px] bg-gradient-to-b from-purple-500/50 via-white/5 to-transparent" />
+
+                {recentExperiences.length > 0 ? (
+                  recentExperiences.map((exp: any, index: number) => (
+                    <div key={index} className="relative flex gap-5 mb-8 last:mb-0 group/timeline">
+                      <div className="relative z-10 shrink-0 mt-1">
+                        <div className={`w-5 h-5 rounded-full border-[4px] border-[#0A0A0A] flex items-center justify-center transition-colors duration-300 ${exp.isCurrent ? 'bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.5)]' : 'bg-gray-700 group-hover/timeline:bg-gray-500'}`}>
+                          {exp.isCurrent && <div className="w-1.5 h-1.5 rounded-full bg-black" />}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <h4 className="text-sm font-semibold text-white mb-1 group-hover/timeline:text-cyan-400 transition-colors">{exp.role}</h4>
+                        <p className="text-[11px] font-medium text-gray-500">{exp.company} • {exp.period}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">No operational experience logged.</p>
+                )}
               </div>
-            </div>
+            </motion.div>
+
+            {/* 3. PROJECTS SHOWCASE */}
+            <motion.div variants={itemVariants} className="xl:col-span-2 rounded-[32px] bg-[#0A0A0A] border border-white/5 p-8 shadow-2xl flex flex-col hover:border-white/10 transition-all duration-500">
+              <div className="flex justify-between items-center mb-8 pb-6 border-b border-white/5">
+                <div className="flex items-center gap-3">
+                  <FiBriefcase className="text-blue-400" />
+                  <h2 className="text-sm font-semibold text-white tracking-widest uppercase">Featured Case Studies</h2>
+                </div>
+                <Link to="/dashboard/projects" className="text-[10px] font-bold text-cyan-400 hover:text-white transition-colors flex items-center gap-2 uppercase tracking-widest">
+                  BROWSE REPO <FiArrowRight />
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
+                {recentProjects.length > 0 ? (
+                  recentProjects.map((project: any, index: number) => (
+                    <Link to="/dashboard/projects" key={index} className="block group">
+                      <div className="h-full group-hover:-translate-y-1 transition-transform duration-300">
+                        <DashboardFeatureCard 
+                          tag={project.category === "AI Engineer" ? "Industrial Analytics" : (project.category || "Enterprise System")} 
+                          title={project.title} 
+                          tech={project.tech ? project.tech.join(", ") : "Various Technologies"} 
+                        />
+                      </div>
+                    </Link>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">No enterprise projects deployed.</p>
+                )}
+              </div>
+            </motion.div>
+
+            {/* 4. CERTIFICATIONS */}
+            <motion.div variants={itemVariants} className="xl:col-span-1 rounded-[32px] bg-[#0A0A0A] border border-white/5 p-8 shadow-2xl flex flex-col hover:border-white/10 transition-all duration-500">
+              <div className="flex justify-between items-center mb-8 pb-6 border-b border-white/5">
+                <div className="flex items-center gap-3">
+                  <FiAward className="text-orange-400" />
+                  <h2 className="text-sm font-semibold text-white tracking-widest uppercase">Achievements</h2>
+                </div>
+                <Link to="/dashboard/certifications" className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+                  <FiArrowRight />
+                </Link>
+              </div>
+
+              <div className="flex flex-col gap-4 flex-1">
+                {recentCerts.length > 0 ? (
+                  recentCerts.map((cert: any, index: number) => (
+                    <Link to="/dashboard/certifications" key={index} className="block group">
+                      <div className="flex items-center justify-between p-4 rounded-2xl bg-[#111111] border border-white/5 group-hover:bg-[#151515] group-hover:border-orange-500/30 transition-all duration-300">
+                        <div className="flex items-center gap-4 overflow-hidden">
+                          <div className="w-10 h-10 shrink-0 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-black transition-colors">
+                            <FiAward />
+                          </div>
+                          <div className="truncate">
+                            <h4 className="text-xs font-semibold text-white truncate group-hover:text-orange-400 transition-colors">{cert.title}</h4>
+                            <p className="text-[10px] font-medium text-gray-500 truncate mt-1">{cert.issuer}</p>
+                          </div>
+                        </div>
+                        <span className="text-[10px] text-gray-600 font-bold ml-2 shrink-0">{cert.year}</span>
+                      </div>
+                    </Link>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">No certification data.</p>
+                )}
+              </div>
+            </motion.div>
 
           </div>
         </motion.div>
@@ -152,66 +280,12 @@ const Overview = () => {
   );
 };
 
-// ================= KOMPONEN BANTUAN (UI) =================
-
-const StatCard = ({ label, value, desc, color }: any) => (
-  <div className="p-5 rounded-2xl bg-[#0a0d14] border border-white/5 flex flex-col items-center text-center hover:bg-white/[0.02] transition-colors">
-    <div className={`w-8 h-8 rounded-lg ${color}/10 flex items-center justify-center mb-3`}>
-      <FiAward className={`text-${color.split('-')[1]}-400`} />
-    </div>
-    <span className="text-3xl font-black text-white mb-1">{value}</span>
-    <span className="text-[11px] font-semibold text-gray-400 mb-1">{label}</span>
-    <div className="flex items-center gap-1.5 text-[9px] text-gray-500 uppercase tracking-wider">
-      <span className={`w-1.5 h-1.5 rounded-full ${color}`} />
-      {desc}
-    </div>
-  </div>
-);
-
-const InfoItem = ({ icon, title, value }: any) => (
-  <div className="flex items-center gap-3">
-    <div className="text-cyan-400 text-lg opacity-70">{icon}</div>
-    <div>
-      <p className="text-[10px] text-gray-500 uppercase tracking-wider">{title}</p>
-      <p className="text-xs text-white font-medium">{value}</p>
-    </div>
-  </div>
-);
-
-const MiniTimelineItem = ({ role, company, active }: any) => (
-  <div className="relative flex gap-5 group">
-    <div className={`w-6 h-6 rounded-full border flex items-center justify-center shrink-0 z-10 transition-colors ${active ? 'bg-cyan-500/20 border-cyan-400' : 'bg-[#0a0d14] border-white/10 group-hover:border-white/30'}`}>
-      <span className={`w-2 h-2 rounded-full ${active ? 'bg-cyan-400' : 'bg-gray-600 group-hover:bg-gray-400'}`} />
-    </div>
-    <div className="pb-2">
-      <h4 className={`text-sm font-bold ${active ? 'text-white' : 'text-gray-300'}`}>{role}</h4>
-      <p className="text-[11px] text-gray-500 mt-0.5">{company}</p>
-    </div>
-  </div>
-);
-
-const MiniProjectCard = ({ tag, title, tech }: any) => (
-  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-cyan-400/30 transition-colors group cursor-pointer">
-    <span className="inline-block px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 text-[8px] font-bold tracking-widest mb-2">
-      {tag}
-    </span>
-    <h3 className="text-sm font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">{title}</h3>
-    <p className="text-[10px] text-gray-500">{tech}</p>
-  </div>
-);
-
-const MiniCertItem = ({ title, issuer, year }: any) => (
-  <div className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors">
-    <div className="flex items-center gap-3">
-      <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400">
-        <FiAward />
-      </div>
-      <div>
-        <h4 className="text-xs font-bold text-white line-clamp-1">{title}</h4>
-        <p className="text-[10px] text-gray-500">{issuer}</p>
-      </div>
-    </div>
-    <span className="text-[10px] text-gray-400 font-medium">{year}</span>
+// ================= SUB-COMPONENTS =================
+interface InfoBoxProps { title: string; value: string; }
+const InfoBox = ({ title, value }: InfoBoxProps) => (
+  <div className="flex flex-col gap-1 p-3 rounded-xl bg-[#111111] border border-white/5">
+    <p className="text-[9px] text-gray-500 uppercase tracking-widest font-semibold">{title}</p>
+    <p className="text-[11px] md:text-xs text-white font-medium">{value}</p>
   </div>
 );
 
